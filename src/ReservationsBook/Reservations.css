@@ -1,0 +1,14 @@
+.reservations{
+    display: flex;
+    flex-wrap: wrap;
+    align: center;
+}
+
+#clientName{
+    display: flex;
+    margin-right: 0.5%;
+}
+
+.filter{
+    /*border: solid black 1px;*/
+}
