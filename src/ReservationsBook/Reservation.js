@@ -2,7 +2,7 @@ import React from 'react'
 
 const reservation = (props) => {
     return (
-        <div className="card col-md-4" id="reservationCard">
+        <div className="card col-md-4" id={props.id} >
             <div className="card-body col pl-4">
                 <div className="list-group col-md-12 flex-row">
                     <label className="mr-2" htmlFor="name">Client Name:</label>
@@ -30,7 +30,8 @@ const reservation = (props) => {
                 </div>
                 <div className="flex-row">
                     <button type="button"
-                            className="btn mr-2 btn-outline-primary">
+                            className="btn mr-2 btn-outline-primary"
+                            onClick={props.modal}>
                         Edit
                     </button>
                     <button type="button" className="btn btn-outline-danger">

@@ -1,20 +1,30 @@
-import '../App.css';
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import React from 'react'
+import 'react-bootstrap';
 
-const header = () => {
-    return (
-        <div className="header bg-dark col-md-12">
-            <nav className="navbar form-row navbar-expand-lg navbar-dark bg-dark text-center">
+class Header extends React.Component{
+    constructor(props, context) {
+        super(props, context);
+
+        this.state = {
+            open: false
+        };
+    }
+
+    render() {
+        return (
+            <div class="bg-dark">
+            <nav className="navbar form-row navbar-expand-lg navbar-dark  text-center">
                 <Link className="navbar-brand" to="/">Hotel Paradise</Link>
-                <button className="navbar-toggler" type="button" data-toggle="collapse"
-                        data-target="#navbarTogglerContent"
-                        aria-controls="navbarToggleExternalContent" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarTogglerContent">
-                    <ul className="navbar-nav">
+                {/*<button className="navbar-toggler collapsed" type="button" data-toggle="collapsed"*/}
+                        {/*data-target="#navbarContent"*/}
+                        {/*aria-controls="navbarContent" aria-expanded="false"*/}
+                        {/*aria-label="Toggle navigation">*/}
+                    {/*<span className="navbar-toggler-icon"></span>*/}
+                {/*</button>*/}
+
+                <div className="navbar-collapse collapsed " aria-expanded="true" id="navbarContent">
+                    <ul className="nav navbar-nav">
                         <li className="nav-item">
                             <Link className="nav-link" to="/reservations">ReservationBook</Link>
                         </li>
@@ -24,8 +34,9 @@ const header = () => {
                     </ul>
                 </div>
             </nav>
-        </div>
-    )
-};
+            </div>
+        )
+    };
+}
 
-export default header;
+export default Header;

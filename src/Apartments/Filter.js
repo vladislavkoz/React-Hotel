@@ -1,23 +1,23 @@
-import React from 'react'
+import React,{Component} from 'react'
 import './Apartments.css';
 
-class Filter extends Comment{
+class Filter extends Component{
     render(){
         return(
             <div className={"filter"}>
                 <div className={"options"}>
                     <div className={"option"}>
-                        <label className={"label"} htmlFor="apartmentAccommodation">Accommodation type: </label>
+                        <label className={"label"} htmlFor="apartmentAccommodation">Accommodation: </label>
                         <select className={"custom-select"} name="accommodation" id="accommodation">
-                            <option selected value="">Choose...</option>
+                            <option selected value="">All</option>
                             <option value="SGL">SGL</option>
                             <option value="DGL">DGL</option>
                         </select>
                     </div>
                     <div className={"option"}>
-                        <label className={"label"} htmlFor="apartmentComfortType">Comfort type: </label>
+                        <label className={"label"} htmlFor="apartmentComfortType">Comfort: </label>
                         <select className={"custom-select"} name="comfort" id="comfort">
-                            <option selected value="">Choose...</option>
+                            <option selected value="">All</option>
                             <option value="ECONOM">ECONOM</option>
                             <option value="STANDART">STANDART</option>
                             <option value="LUX">LUX</option>

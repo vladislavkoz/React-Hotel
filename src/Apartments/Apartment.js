@@ -1,5 +1,4 @@
 import React from 'react';
-
 const apartment = (props) => {
     return (
         <div className="card col-md-4" id="apartmentCard">
@@ -14,7 +13,7 @@ const apartment = (props) => {
                     <p className="card-text" id="comfortType">{props.comfort}</p>
                 </div>
                 <div className="text-center">
-                    <button className="btn btn-outline-success" id="apartmentReservationButton"
+                    <button onClick={props.modal} className="btn btn-outline-success" id="apartmentReservationButton"
                             >Reserve
                     </button>
                 </div>
@@ -22,5 +21,6 @@ const apartment = (props) => {
         </div>
     )
 };
+
 
 export default apartment;
