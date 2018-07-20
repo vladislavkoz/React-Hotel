@@ -31,10 +31,10 @@ const reservation = (props) => {
                 <div className="flex-row">
                     <button type="button"
                             className="btn mr-2 btn-outline-primary"
-                            onClick={props.modal}>
+                            onClick={props.editModal}>
                         Edit
                     </button>
-                    <button type="button" className="btn btn-outline-danger">
+                    <button type="button" onClick={props.deleteModal} className="btn btn-outline-danger">
                         Delete
                     </button>
                 </div>

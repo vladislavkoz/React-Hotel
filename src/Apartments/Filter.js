@@ -1,10 +1,16 @@
-import React,{Component} from 'react'
+import React, {Component} from 'react'
 import './Apartments.css';
 
-class Filter extends Component{
-    render(){
-        return(
-            <div className={"filter"}>
+class Filter extends Component {
+
+    clearFilter = (e) => {
+        e.preventDefault();
+        e.target.reset();
+    };
+
+    render() {
+        return (
+            <form className={"form"} onSubmit={this.clearFilter.bind(this)} id="filterForm">
                 <div className={"options"}>
                     <div className={"option"}>
                         <label className={"label"} htmlFor="apartmentAccommodation">Accommodation: </label>
@@ -37,9 +43,9 @@ class Filter extends Component{
                     </div>
                 </div>
                 <div className={"filterButton"}>
-                    <button type="submit" className="btn btn-success center-block">Filter</button>
+                    <button type="submit" className="btn btn-success">Clear filter</button>
                 </div>
-            </div>
+            </form>
         );
     }
 }

@@ -5,7 +5,6 @@ import Reservations from './ReservationsBook/Reservations';
 import Header from './Header/Header';
 import Home from './HomePage/Home'
 import {BrowserRouter as Router, Route} from 'react-router-dom'
-import ReserveModal from "./ModalWindow/ReserveModal";
 
 class App extends Component {
     render() {
@@ -17,7 +16,6 @@ class App extends Component {
                     <Route exact path="/" component={Home}/>
                     <Route path="/reservations" component={Reservations}/>
                     <Route path="/apartments" component={Apartments}/>
-                    <Route path="/reserve" component={ReserveModal}/>
                 </div>
             </Router>
         );

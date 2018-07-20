@@ -2,40 +2,44 @@ import React from 'react';
 
 class EditModal extends React.Component {
 
-    constructor(props, context) {
-
-        super(props, context);
+    constructor(props) {
+        super(props);
         this.state = {
+            id:this.props.reservation._id,
+            clientName: this.props.reservation.clientName,
+            clientPhone: this.props.reservation.clientPhone,
+            accommodation: this.props.reservation.accommodationType,
+            comfort: this.props.reservation.comfortType,
+            checkInDate: this.props.reservation.checkInDate,
+            checkOutDate: this.props.reservation.checkOutDate,
             reserve: this.props.reservation,
         };
     }
 
-    handleChange = (e) => {
-        let form = e.target.parentNode.parentElement;
-        // alert(form.id);
-        // alert(this.state.reserve.id);
-        let id = this.state.reserve.id;
-        let clientName = form.querySelector('#clientName').value;
-        let clientPhone = form.querySelector('#clientPhone').value;
-        let accommodation = form.querySelector('#apartmentAccommodation').value;
-        let comfort = form.querySelector('#apartmentComfortType').value;
-        let checkInDate = form.querySelector('#checkInDate').value;
-        let checkOutDate = form.querySelector('#checkOutDate').value;
+    handleChange(e) {
+        const name = e.target.id;
+        const value = e.target.value;
+        this.setState({[name]: value});
+    }
 
+    updateReservation(){
         this.setState({
-            reserve:
-                {
-                    id: id,
-                    clientName: clientName,
-                    clientPhone: clientPhone,
-                    accommodation: accommodation,
-                    comfort: comfort,
-                    checkInDate: checkInDate,
-                    checkOutDate: checkOutDate
+                reserve: {
+                    _id:this.state.id,
+                    clientName: this.state.clientName,
+                    clientPhone: this.state.clientPhone,
+                    accommodation: this.state.accommodation,
+                    comfort: this.state.comfort,
+                    checkInDate: this.state.checkInDate,
+                    checkOutDate: this.state.checkOutDate,
                 }
+            },() =>{
+            this.props.onChange(this.state.reserve);
+            }
+        );
+    }
 
-        });
-    };
+
 
     render() {
         return (
@@ -43,18 +47,21 @@ class EditModal extends React.Component {
                 <div className="form-group col-md-6">
                     <label htmlFor="clientName">Full Name</label>
                     <input type="text" className="field form-control" id="clientName"
-                           placeholder="Enter name" onChange={this.handleChange}
-                           value={this.state.reserve.clientName}/>
+                           placeholder="Enter name" onChange={(event) => this.handleChange(event)}
+                           value={this.state.clientName}/>
                 </div>
                 <div className="form-group col-md-6">
                     <label htmlFor="clientPhone">Phone number</label>
-                    <input type="text" value={this.state.reserve.clientPhone} className="phoneNumber form-control"
+                    <input type="text" value={this.state.clientPhone} className="phoneNumber form-control"
                            id="clientPhone"
+                           onChange={(event) => this.handleChange(event)}
                            placeholder="(xxx) xxx-xx-xx"/>
                 </div>
                 <div className="form-group col-md-6">
                     <label className="mr-2" htmlFor="apartmentAccommodation">Accommodation: </label>
-                    <select value={this.state.reserve.accommodation} className="sel custom-select "
+                    <select value={this.state.accommodation}
+                            onChange={(event) => this.handleChange(event)}
+                            className="sel custom-select "
                             id="apartmentAccommodation">
                         <option value="SGL">SGL</option>
                         <option value="DGL">DGL</option>
@@ -62,7 +69,9 @@ class EditModal extends React.Component {
                 </div>
                 <div className="form-group col-md-6">
                     <label className="mr-2" htmlFor="apartmentComfortType">Comfort: </label>
-                    <select value={this.state.reserve.comfort} className="required sel custom-select "
+                    <select value={this.state.comfort}
+                            onChange={(event) => this.handleChange(event)}
+                            className="required sel custom-select "
                             id="apartmentComfortType">
                         <option value="ECONOM">ECONOM</option>
                         <option value="STANDART">STANDART</option>
@@ -72,17 +81,19 @@ class EditModal extends React.Component {
                 <div className="form-group col-md-6 mr-6">
                     <label htmlFor="checkInDate">Check-in date:</label>
                     <input className="form-control" type="date" id="checkInDate"
-                           value={this.state.reserve.checkInDate}/>
+                           onChange={(event) => this.handleChange(event)}
+                           value={this.state.checkInDate}/>
                 </div>
                 <div className="form-group col-md-6">
                     <label htmlFor="checkOutDate">Check-out date:</label>
                     <input className="form-control" type="date" id="checkOutDate"
-                           value={this.state.reserve.checkOutDate}/>
+                           onChange={(event) => this.handleChange(event)}
+                           value={this.state.checkOutDate}/>
                 </div>
                 <div className="form-row col-md-12 text-center">
                     <div className="col-12">
-                        <button type="submit" value={this.state.reserve.clientName} id={this.props.reservation.id}
-                                onClick={this.props.change()} className="btn btn-success center-block">RESERVE
+                        <button type="submit"
+                                onClick={this.updateReservation.bind(this)} className="btn btn-success center-block">Confirm
                         </button>
                     </div>
                 </div>
@@ -90,6 +101,5 @@ class EditModal extends React.Component {
         )
     };
 }
-
 
 export default EditModal;

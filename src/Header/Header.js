@@ -13,7 +13,7 @@ class Header extends React.Component{
 
     render() {
         return (
-            <div class="bg-dark">
+            <div className="bg-dark">
             <nav className="navbar form-row navbar-expand-lg navbar-dark  text-center">
                 <Link className="navbar-brand" to="/">Hotel Paradise</Link>
                 {/*<button className="navbar-toggler collapsed" type="button" data-toggle="collapsed"*/}

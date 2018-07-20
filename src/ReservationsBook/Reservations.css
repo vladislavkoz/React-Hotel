@@ -1,10 +1,15 @@
 .reservations{
     display: flex;
     flex-wrap: wrap;
-    align: center;
 }
 
 #clientName{
     display: flex;
     margin-right: 0.5%;
+}
+
+
+
+.editModal{
+    width:50%;
 }

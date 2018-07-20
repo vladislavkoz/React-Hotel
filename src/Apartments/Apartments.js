@@ -18,6 +18,8 @@ const customStyles = {
     }
 };
 
+const reserveUrl = 'http://localhost:3005/reserve';
+
 class Apartments extends Component {
     state = {
         apartments: [
@@ -28,26 +30,36 @@ class Apartments extends Component {
             {accommodationType: 'SGL', comfortType: 'STANDART'},
             {accommodationType: 'DGL', comfortType: 'LUX'}
         ],
-        isOpen: false,
-        selectedApartment:''
+        isOpenReserveModal: false
     };
 
-    closeModal = () => {
+    closeReserveModal = () => {
         this.setState({
-            isOpen: !this.state.isOpen
+            isOpenReserveModal: false
         });
     };
 
-    openModal = (apartment) =>{
+    openReserveModal = (apartment) =>{
       this.setState({
-          isOpen: true,
+          isOpenReserveModal: true,
           selectedApartment:apartment
       });
     };
 
-    componentWillMount() {
-        Modal.setAppElement('body');
-    }
+    addNewReservation = (reservation) =>{
+
+        this.closeReserveModal();
+        return fetch(reserveUrl, {
+            method: "POST",
+            body: JSON.stringify({
+                reservation: reservation
+            }),
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+    };
 
     render() {
         return (
@@ -59,27 +71,30 @@ class Apartments extends Component {
                             <Apartment
                                 accommodation={apartment.accommodationType}
                                 comfort={apartment.comfortType}
-                                modal={e => this.openModal(apartment)}
+                                modal={e => this.openReserveModal(apartment)}
+                                reserve={e => this.reserve(apartment)}
                             />
                         )}
                     )}
                     </div>
                 <div>
                     <Modal
-                        isOpen={this.state.isOpen}
-                           onRequestClose={this.closeModal}
+                        isOpen={this.state.isOpenReserveModal}
+                           onRequestClose={this.closeReserveModal}
                            style={customStyles}>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.closeModal}>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.closeReserveModal}>
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <ReserveModal apartment={this.state.selectedApartment}/>
+                        <ReserveModal
+                            apartment={this.state.selectedApartment}
+                            addNew={this.addNewReservation}
+                        />
                     </Modal>
                 </div>
             </div>
 
         );
     }
-
 }
 
 export default Apartments;
