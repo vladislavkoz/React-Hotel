@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import Apartment from './Apartment';
 import './Apartments.css';
-import Filter from "./Filter";
+import ApartmentsFilter from "./ApartmentsFilter";
 import Modal from "react-modal";
 import './Filter.css'
 import ReserveModal from "../ModalWindow/ReserveModal";
 
 const customStyles = {
     content: {
-        width:'60%',
+        width: '60%',
         top: '50%',
         left: '50%',
         right: 'auto',
@@ -18,7 +18,7 @@ const customStyles = {
     }
 };
 
-const reserveUrl = 'http://localhost:3005/reserve';
+const reserveUrl = 'http://localhost:3005/reservations';
 
 class Apartments extends Component {
     state = {
@@ -39,22 +39,21 @@ class Apartments extends Component {
         });
     };
 
-    openReserveModal = (apartment) =>{
-      this.setState({
-          isOpenReserveModal: true,
-          selectedApartment:apartment
-      });
+    openReserveModal = (apartment) => {
+        this.setState({
+            isOpenReserveModal: true,
+            selectedApartment: apartment
+        });
     };
 
-    addNewReservation = (reservation) =>{
-
+    addNewReservation = (reservation) => {
         this.closeReserveModal();
         return fetch(reserveUrl, {
             method: "POST",
             body: JSON.stringify({
                 reservation: reservation
             }),
-            headers:{
+            headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
@@ -64,25 +63,28 @@ class Apartments extends Component {
     render() {
         return (
             <div>
-                <Filter/>
+                <ApartmentsFilter/>
                 <hr/>
                 <div className={'cards-Container'}>
-                    {this.state.apartments.map(apartment =>{return(
-                            <Apartment
-                                accommodation={apartment.accommodationType}
-                                comfort={apartment.comfortType}
-                                modal={e => this.openReserveModal(apartment)}
-                                reserve={e => this.reserve(apartment)}
-                            />
-                        )}
+                    {this.state.apartments.map(apartment => {
+                            return (
+                                <Apartment
+                                    accommodation={apartment.accommodationType}
+                                    comfort={apartment.comfortType}
+                                    modal={e => this.openReserveModal(apartment)}
+                                    reserve={e => this.reserve(apartment)}
+                                />
+                            )
+                        }
                     )}
-                    </div>
+                </div>
                 <div>
                     <Modal
                         isOpen={this.state.isOpenReserveModal}
-                           onRequestClose={this.closeReserveModal}
-                           style={customStyles}>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.closeReserveModal}>
+                        onRequestClose={this.closeReserveModal}
+                        style={customStyles}>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close"
+                                onClick={this.closeReserveModal}>
                             <span aria-hidden="true">&times;</span>
                         </button>
                         <ReserveModal

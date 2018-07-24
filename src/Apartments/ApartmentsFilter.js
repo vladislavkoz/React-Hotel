@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import './Apartments.css';
 
-class Filter extends Component {
+class ApartmentsFilter extends Component {
 
     clearFilter = (e) => {
         e.preventDefault();
@@ -37,9 +37,7 @@ class Filter extends Component {
                     </div>
                     <div className="option">
                         <label className={"label"} htmlFor="checkOutDate">Check-out date:</label>
-                        <span id="val">
                         <input className="form-control" type="date" id="checkOutDate"/>
-                        </span>
                     </div>
                 </div>
                 <div className={"filterButton"}>
@@ -50,4 +48,4 @@ class Filter extends Component {
     }
 }
 
-export default Filter;
+export default ApartmentsFilter;
