@@ -2,7 +2,8 @@ import React from "react";
 
 class DeleteModal extends React.Component {
 
-    handlerCancel = () => {
+    handlerCancel = (e) => {
+        e.preventDefault();
         this.props.deleteReservation(this.props.reservation._id,this.props.index)
     };
 

@@ -33,9 +33,11 @@ const reservation = (props) => {
                             className="btn mr-2 btn-outline-primary"
                             onClick={props.editModal}>
                         Edit
+                        <i className="fas fa-user-edit ml-2"/>
                     </button>
                     <button type="button" onClick={props.deleteModal} className="btn btn-outline-danger">
                         Delete
+                        <i className="fas fa-trash-alt ml-2"></i>
                     </button>
                 </div>
             </div>

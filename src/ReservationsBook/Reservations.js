@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Reservation from './Reservation';
 import './Reservations.css'
-import ApartmentsFilter from '../Apartments/ApartmentsFilter';
 import '../Apartments/Filter.css'
 import Modal from "react-modal";
 import EditModal from "../ModalWindow/EditModal";
@@ -63,9 +62,9 @@ class Reservations extends Component {
             method: 'PATCH',
             body: JSON.stringify({
                 clientName: reservationForUpdate.clientName,
-                clientTelephone: reservationForUpdate.clientPhone,
-                apartmentAccommodation: reservationForUpdate.accommodation,
-                apartmentComfortType: reservationForUpdate.comfort,
+                clientPhone: reservationForUpdate.clientPhone,
+                accommodation: reservationForUpdate.accommodation,
+                comfort: reservationForUpdate.comfort,
                 checkInDate: reservationForUpdate.checkInDate,
                 checkOutDate: reservationForUpdate.checkOutDate
             }),
@@ -134,14 +133,23 @@ class Reservations extends Component {
         });
     };
 
-    getFilteredReservations = () =>{
-        alert("filter")
+    async getFilteredReservations(filter){
+        let reservations = await fetch(reservationsUrl + "/by/?" + filter )
+            .then(response => response.json());
+        reservations.forEach(res => {
+            res.checkInDate = dateFormater(res.checkInDate);
+            res.checkOutDate = dateFormater(res.checkOutDate);
+        });
+        this.setState({reservations: reservations});
     };
 
     render() {
         return (
             <div>
-                <ReservationsFilter getFilteredReservations={this.getFilteredReservations}/>
+                <ReservationsFilter
+                    getFilteredReservations={this.getFilteredReservations.bind(this)}
+                    getAllReservations={this.getAllReservations.bind(this)}
+                />
                 <hr/>
                 <div className={"reservations"}>
                     {this.state.reservations.map((reservation, index) => {

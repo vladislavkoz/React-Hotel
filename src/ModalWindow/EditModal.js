@@ -53,7 +53,7 @@ class EditModal extends React.Component {
                     <select required value={this.state.reservation.accommodation}
                             onChange={(event) => this.handleChange(event)}
                             className="sel custom-select "
-                            id="apartmentAccommodation">
+                            id="accommodation">
                         <option value="SGL">SGL</option>
                         <option value="DGL">DGL</option>
                     </select>
@@ -63,7 +63,7 @@ class EditModal extends React.Component {
                     <select required value={this.state.reservation.comfort}
                             onChange={(event) => this.handleChange(event)}
                             className="required sel custom-select "
-                            id="apartmentComfortType">
+                            id="comfort">
                         <option value="ECONOM">ECONOM</option>
                         <option value="STANDART">STANDART</option>
                         <option value="LUX">LUX</option>

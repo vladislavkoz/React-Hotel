@@ -17,27 +17,47 @@ const customStyles = {
         transform: 'translate(-50%, -50%)'
     }
 };
-
+const apartmentUrl = "http://localhost:3005/apartments";
 const reserveUrl = 'http://localhost:3005/reservations';
 
 class Apartments extends Component {
-    state = {
-        apartments: [
-            {accommodationType: 'SGL', comfortType: 'LUX'},
-            {accommodationType: 'DGL', comfortType: 'ECONOM'},
-            {accommodationType: 'DGL', comfortType: 'STANDART'},
-            {accommodationType: 'SGL', comfortType: 'ECONOM'},
-            {accommodationType: 'SGL', comfortType: 'STANDART'},
-            {accommodationType: 'DGL', comfortType: 'LUX'}
-        ],
-        isOpenReserveModal: false
-    };
+    constructor() {
+        super();
+        this.state = {
+            apartments: [],
+            selectedApartment:"",
+            isOpenReserveModal: false
+        }
+    }
+
+    // state = {
+    //     apartments: [
+    //         {accommodationType: 'SGL', comfortType: 'LUX'},
+    //         {accommodationType: 'DGL', comfortType: 'ECONOM'},
+    //         {accommodationType: 'DGL', comfortType: 'STANDART'},
+    //         {accommodationType: 'SGL', comfortType: 'ECONOM'},
+    //         {accommodationType: 'SGL', comfortType: 'STANDART'},
+    //         {accommodationType: 'DGL', comfortType: 'LUX'}
+    //     ],
+    //     isOpenReserveModal: false
+    // };
 
     closeReserveModal = () => {
         this.setState({
             isOpenReserveModal: false
         });
     };
+
+    componentWillMount() {
+        this.getAllApartments();
+    }
+
+    async getAllApartments() {
+        let apartments = await fetch(apartmentUrl)
+            .then(response => response.json());
+        this.setState({apartments: apartments});
+    }
+
 
     openReserveModal = (apartment) => {
         this.setState({
@@ -51,7 +71,7 @@ class Apartments extends Component {
         return fetch(reserveUrl, {
             method: "POST",
             body: JSON.stringify({
-                reservation: reservation
+                entity: reservation
             }),
             headers: {
                 'Accept': 'application/json',
@@ -63,14 +83,16 @@ class Apartments extends Component {
     render() {
         return (
             <div>
-                <ApartmentsFilter/>
+                <ApartmentsFilter
+                getAllApartments= {e => this.getAllApartments()}
+                />
                 <hr/>
                 <div className={'cards-Container'}>
                     {this.state.apartments.map(apartment => {
                             return (
                                 <Apartment
-                                    accommodation={apartment.accommodationType}
-                                    comfort={apartment.comfortType}
+                                    accommodation={apartment.accommodation}
+                                    comfort={apartment.comfort}
                                     modal={e => this.openReserveModal(apartment)}
                                     reserve={e => this.reserve(apartment)}
                                 />

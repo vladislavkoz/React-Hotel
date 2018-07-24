@@ -15,7 +15,9 @@ const apartment = (props) => {
                 </div>
                 <div className="text-center">
                     <button onClick={props.modal} className="btn btn-outline-success" id="apartmentReservationButton"
-                    >Reserve
+                    >
+                        <i className="fas fa-bed m-2 fa-2x"></i>
+                        <i className="fas fa-plus fa-2x"></i>
                     </button>
                 </div>
             </div>

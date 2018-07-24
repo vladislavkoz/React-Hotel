@@ -7,8 +7,8 @@ class ReserveModal extends React.Component {
             reservation :{
                 clientName: "",
                 clientPhone: "",
-                accommodation: this.props.apartment.accommodationType,
-                comfort: this.props.apartment.comfortType,
+                accommodation: this.props.apartment.accommodation,
+                comfort: this.props.apartment.comfort,
                 checkInDate: "",
                 checkOutDate: "",
             }
