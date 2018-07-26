@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import Apartment from './Apartment';
-import './Apartments.css';
-import ApartmentsFilter from "./ApartmentsFilter";
+import Apartment from '../ApartmentsPanel/Apartment';
+import '../ApartmentsPanel/Apartments.css';
+import ReserveFilter from "./ReserveFilter";
 import Modal from "react-modal";
 import './Filter.css'
 import ReserveModal from "../ModalWindow/ReserveModal";
@@ -20,7 +20,7 @@ const customStyles = {
 const apartmentUrl = "http://localhost:3005/apartments";
 const reserveUrl = 'http://localhost:3005/reservations';
 
-class Apartments extends Component {
+class ReservePanel extends Component {
     constructor() {
         super();
         this.state = {
@@ -30,34 +30,24 @@ class Apartments extends Component {
         }
     }
 
-    // state = {
-    //     apartments: [
-    //         {accommodationType: 'SGL', comfortType: 'LUX'},
-    //         {accommodationType: 'DGL', comfortType: 'ECONOM'},
-    //         {accommodationType: 'DGL', comfortType: 'STANDART'},
-    //         {accommodationType: 'SGL', comfortType: 'ECONOM'},
-    //         {accommodationType: 'SGL', comfortType: 'STANDART'},
-    //         {accommodationType: 'DGL', comfortType: 'LUX'}
-    //     ],
-    //     isOpenReserveModal: false
-    // };
-
     closeReserveModal = () => {
         this.setState({
             isOpenReserveModal: false
         });
     };
 
-    componentWillMount() {
-        this.getAllApartments();
-    }
-
     async getAllApartments() {
         let apartments = await fetch(apartmentUrl)
-            .then(response => response.json());
+            .then(response =>
+                response.json());
         this.setState({apartments: apartments});
     }
 
+    async getFilteredApartments(filter){
+        let apartments = await fetch(apartmentUrl + "/by/?" + filter )
+            .then(response => response.json());
+        this.setState({apartments: apartments});
+    };
 
     openReserveModal = (apartment) => {
         this.setState({
@@ -80,13 +70,19 @@ class Apartments extends Component {
         });
     };
 
+    removeApartments = () =>{
+        this.setState({apartments:[]})
+    };
+
     render() {
         return (
             <div>
-                <ApartmentsFilter
-                getAllApartments= {e => this.getAllApartments()}
+                <br/>
+                <h1 className="text-sm-center">Choose dates of reservation</h1>
+                <ReserveFilter
+                removeApartments= {this.removeApartments.bind(this)}
+                getFilteredApartment = {this.getFilteredApartments.bind(this)}
                 />
-                <hr/>
                 <div className={'cards-Container'}>
                     {this.state.apartments.map(apartment => {
                             return (
@@ -121,4 +117,4 @@ class Apartments extends Component {
     }
 }
 
-export default Apartments;
+export default ReservePanel;

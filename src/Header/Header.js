@@ -7,11 +7,9 @@ class Header extends React.Component {
         return (
             <div className="bg-dark">
                 <nav className="navbar form-row navbar-expand-lg navbar-dark  text-center">
-
                     <Link className="navbar-brand" to="/">
                         <i className="far fa-building mr-1"></i>
-
-                        Hotel Paradise
+                        HotelParadise
                     </Link>
                     <button className="navbar-toggler " type="button" data-toggle="collapse"
                             data-target="#navbarContent"
@@ -22,11 +20,15 @@ class Header extends React.Component {
                     <div className="navbar-collapse collapse" aria-expanded="true" id="navbarContent">
                         <ul className="nav navbar-nav">
                             <li className="nav-item">
-                                <Link className="nav-link" to="/reservations">ReservationBook</Link>
+                                <Link className="nav-link" to="/reservations">Reservation Book</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/apartments">Apartments</Link>
+                                <Link className="nav-link" to="/reservePanel">Reserve Panel</Link>
                             </li>
+                            <li>
+                                <Link className="nav-link" to="/apartmentsPanel">Apartments Panel</Link>
+                            </li>
+
                         </ul>
                     </div>
                 </nav>

@@ -74,13 +74,13 @@ class Reservations extends Component {
             }
         }).then(res => res.json());
 
-        if (updated.status != 500){
-            this.setUpdatedReservationInState(updated,reservationForUpdate.index);
+        if (updated.status != 500) {
+            this.setUpdatedReservationInState(updated, reservationForUpdate.index);
         }
         this.closeEditModal();
     };
 
-    setUpdatedReservationInState = (updated,index) =>{
+    setUpdatedReservationInState = (updated, index) => {
         updated.checkInDate = dateFormater(updated.checkInDate);
         updated.checkOutDate = dateFormater(updated.checkOutDate);
 
@@ -99,10 +99,10 @@ class Reservations extends Component {
         this.closeDeleteModal();
     }
 
-    deleteReservationFromState = (index) =>{
+    deleteReservationFromState = (index) => {
         var reservations = [...this.state.reservations];
         reservations.splice(index, 1);
-        this.setState({ reservations })
+        this.setState({reservations})
     };
 
     closeEditModal = () => {
@@ -133,8 +133,8 @@ class Reservations extends Component {
         });
     };
 
-    async getFilteredReservations(filter){
-        let reservations = await fetch(reservationsUrl + "/by/?" + filter )
+    async getFilteredReservations(filter) {
+        let reservations = await fetch(reservationsUrl + "/by/?" + filter)
             .then(response => response.json());
         reservations.forEach(res => {
             res.checkInDate = dateFormater(res.checkInDate);
@@ -167,6 +167,7 @@ class Reservations extends Component {
                         )
                     })}
                 </div>
+                <hr/>
                 <div className={"editModal"}>
                     <Modal
                         isOpen={this.state.isOpenEditModal}

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import '../Apartments/Apartments.css';
+import '../ApartmentsPanel/Apartments.css';
 
 class ReservationsFilter extends Component {
 
@@ -7,22 +7,24 @@ class ReservationsFilter extends Component {
         super(props);
     }
 
-    clearFilter = (e) => {
-        e.preventDefault();
-        this.refs.filterForm.reset();
+    clearFilter = () => {
         this.props.getAllReservations();
     };
 
-    filter = (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
+    createQuery = (formData) => {
         let filter = "";
         for (let entry of formData.entries()) {
             if (entry[1] != "") {
                 filter = filter + entry[0] + "=" + entry[1] + "&";
             }
         }
-        this.props.getFilteredReservations(filter);
+        return filter;
+    };
+
+    filter = (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        this.props.getFilteredReservations(this.createQuery(formData));
     };
 
     render() {
@@ -33,7 +35,7 @@ class ReservationsFilter extends Component {
                         aria-controls="filter">Filter
                     <i className="fas fa-angle-double-down ml-2"/>
                 </button>
-                <form ref="filterForm" className={"form form-row collapse multi-collapse"} onSubmit={this.filter}
+                <form  className={"form form-row collapse multi-collapse"} onSubmit={this.filter}
                       id="filter">
                     <div className={"options"}>
                         <div className="option form-group">
@@ -79,7 +81,7 @@ class ReservationsFilter extends Component {
                         </div>
                     </div>
                     <div className={"button"}>
-                        <button className="btn btn-success" onClick={this.clearFilter.bind(this)}>Clear filter
+                        <button type="reset" className="btn btn-success" onClick={this.clearFilter.bind(this)}>Clear filter
                             <i className="fas fa-eraser ml-2"/>
                         </button>
                     </div>

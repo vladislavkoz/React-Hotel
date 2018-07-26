@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import './App.css';
-import Apartments from './Apartments/Apartments';
+import ReservePanel from './Apartments/ReservePanel';
 import Reservations from './ReservationsBook/Reservations';
+import Home from './Home/Home'
 import Header from './Header/Header';
-import Home from './HomePage/Home'
+import ApartmentsPanel from './ApartmentsPanel/ApartmentsPanel'
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 
 class App extends Component {
@@ -12,10 +13,11 @@ class App extends Component {
             <Router>
                 <div className={"container"}>
                     <Header/>
-
-                    <Route exact path="/" component={Home}/>
+                    <Route  exact path="/" component={Home}/>
+                    <Route path="/apartmentsPanel" component={ApartmentsPanel}/>
                     <Route path="/reservations" component={Reservations}/>
-                    <Route path="/apartments" component={Apartments}/>
+                    <Route path="/reservePanel" component={ReservePanel}/>
+                    <hr/>
                 </div>
             </Router>
         );
