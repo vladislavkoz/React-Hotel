@@ -3,10 +3,6 @@ import '../ApartmentsPanel/Apartments.css';
 
 class ReservationsFilter extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     clearFilter = () => {
         this.props.getAllReservations();
     };
@@ -14,7 +10,7 @@ class ReservationsFilter extends Component {
     createQuery = (formData) => {
         let filter = "";
         for (let entry of formData.entries()) {
-            if (entry[1] != "") {
+            if (entry[1] !== "") {
                 filter = filter + entry[0] + "=" + entry[1] + "&";
             }
         }

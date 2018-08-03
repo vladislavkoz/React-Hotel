@@ -6,6 +6,8 @@ import Modal from "react-modal";
 import EditModal from "../ModalWindow/EditModal";
 import DeleteModal from "../ModalWindow/DeleteModal";
 import ReservationsFilter from "./ReservationsFilter";
+import { connect } from 'react-redux'
+import { getReservations,getFiteredReservations,deleteReservation,updateReservation } from '../actions/reserveActions'
 
 const customStyles = {
     content: {
@@ -19,23 +21,10 @@ const customStyles = {
     }
 };
 
-const reservationsUrl = "http://localhost:3005/reservations";
-
-const numberFormater = (n) => {
-    return n < 10 ? "0" + n : n;
-};
-
-const dateFormater = (date) => {
-    let dat = new Date(date);
-    var result = numberFormater(dat.getFullYear() + "-" + numberFormater(dat.getMonth() + 1) + "-" + numberFormater(dat.getDate()));
-    return result;
-};
-
 class Reservations extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            reservations: [],
             isOpenEditModal: false,
             isOpenDeleteModal: false,
             selectedReservation: '',
@@ -47,63 +36,19 @@ class Reservations extends Component {
         this.getAllReservations();
     }
 
-    async getAllReservations() {
-        let reservations = await fetch(reservationsUrl)
-            .then(response => response.json());
-        reservations.forEach(res => {
-            res.checkInDate = dateFormater(res.checkInDate);
-            res.checkOutDate = dateFormater(res.checkOutDate);
-        });
-        this.setState({reservations: reservations});
+     getAllReservations() {
+        this.props.getReservations()
     }
 
-    async handleUpdate(reservationForUpdate) {
-        let updated = await fetch(reservationsUrl + '/' + reservationForUpdate.id, {
-            method: 'PATCH',
-            body: JSON.stringify({
-                clientName: reservationForUpdate.clientName,
-                clientPhone: reservationForUpdate.clientPhone,
-                accommodation: reservationForUpdate.accommodation,
-                comfort: reservationForUpdate.comfort,
-                checkInDate: reservationForUpdate.checkInDate,
-                checkOutDate: reservationForUpdate.checkOutDate
-            }),
-            headers: {
-                'Accept': 'application/json, text/plain,*/*',
-                'Content-Type': 'application/json'
-            }
-        }).then(res => res.json());
-
-        if (updated.status != 500) {
-            this.setUpdatedReservationInState(updated, reservationForUpdate.index);
-        }
+     handleUpdate(reservationForUpdate) {
+        this.props.updateReservation(reservationForUpdate);
         this.closeEditModal();
     };
 
-    setUpdatedReservationInState = (updated, index) => {
-        updated.checkInDate = dateFormater(updated.checkInDate);
-        updated.checkOutDate = dateFormater(updated.checkOutDate);
-
-        let reservations = [...this.state.reservations];
-        reservations[index] = updated;
-        this.setState({reservations: reservations});
-    };
-
-    async deleteReservation(id, index) {
-        let res = await fetch(reservationsUrl + '/' + id, {
-            method: 'delete'
-        });
-        if (res.status == 204) {
-            this.deleteReservationFromState(index);
-        }
+     deleteReservation(id, index) {
+        this.props.deleteReservation(id,index)
         this.closeDeleteModal();
     }
-
-    deleteReservationFromState = (index) => {
-        var reservations = [...this.state.reservations];
-        reservations.splice(index, 1);
-        this.setState({reservations})
-    };
 
     closeEditModal = () => {
         this.setState({
@@ -133,14 +78,8 @@ class Reservations extends Component {
         });
     };
 
-    async getFilteredReservations(filter) {
-        let reservations = await fetch(reservationsUrl + "/by/?" + filter)
-            .then(response => response.json());
-        reservations.forEach(res => {
-            res.checkInDate = dateFormater(res.checkInDate);
-            res.checkOutDate = dateFormater(res.checkOutDate);
-        });
-        this.setState({reservations: reservations});
+     getFilteredReservations(filter) {
+        this.props.getFiteredReservations(filter);
     };
 
     render() {
@@ -152,7 +91,7 @@ class Reservations extends Component {
                 />
                 <hr/>
                 <div className={"reservations"}>
-                    {this.state.reservations.map((reservation, index) => {
+                    {this.props.reservations.map((reservation, index) => {
                         return (<Reservation
                                 id={reservation._id}
                                 clientName={reservation.clientName}
@@ -206,4 +145,8 @@ class Reservations extends Component {
     }
 }
 
-export default Reservations
+const mapStateToProps = (state) => ({
+    reservations: state.reservationsBook.reservations
+});
+
+export default connect(mapStateToProps,{getReservations,getFiteredReservations,deleteReservation,updateReservation}) (Reservations)

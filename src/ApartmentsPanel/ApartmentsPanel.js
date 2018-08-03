@@ -1,13 +1,12 @@
 import React, {Component} from 'react'
 import '../Apartments/Filter.css'
 import {BootstrapTable, TableHeaderColumn} from "react-bootstrap-table";
-
-const apartmentUrl = "http://localhost:3005/apartments";
+import axios from 'axios';
+const apartmentUrl = "/api/apartments";
 
 async function onAfterDeleteRow(rowKeys) {
-     await fetch(apartmentUrl + '/' + rowKeys, {
+   await fetch(apartmentUrl + '/' + rowKeys, {
         method: 'delete'
-
     });
 }
 
@@ -26,15 +25,15 @@ class ApartmentsPanel extends Component {
         }
     }
 
-    addNewApartment = (e) => {
+   addNewApartment = (e) => {
         e.preventDefault();
         let apartment = {};
         const formData = new FormData(e.target);
         for (let entry of formData.entries()) {
             apartment[entry[0]] = entry[1];
         }
-        this.addApartmentInDB(apartment)
-        this.getAllApartments();
+        this.addApartmentInDB(apartment);
+        this.getAllApartments().then();
     };
 
     componentWillMount() {
@@ -48,21 +47,17 @@ class ApartmentsPanel extends Component {
         this.setState({apartments: apartments});
     }
 
-    addApartmentInDB = (apartment) => {
-        return fetch(apartmentUrl, {
-            method: "POST",
-            body: JSON.stringify({
-                entity: apartment
-            }),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        });
+    addApartmentInDB  (apartment)  {
+     axios
+    .post(apartmentUrl, apartment)
+    .then(res => this.setNewApartmentInState(res.data))
+
     };
 
-
-
+    setNewApartmentInState(apartment){
+        let state = [...this.state.apartments,apartment];
+        this.setState({apartments:state})
+    }
 
     render() {
         return (

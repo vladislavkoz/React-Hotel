@@ -9,8 +9,8 @@ class ReserveModal extends React.Component {
                 clientPhone: "",
                 accommodation: this.props.apartment.accommodation,
                 comfort: this.props.apartment.comfort,
-                checkInDate: "",
-                checkOutDate: "",
+                checkInDate: this.props.filterDates.checkIn,
+                checkOutDate: this.props.filterDates.checkOut,
             }
         }
     }
@@ -44,7 +44,7 @@ class ReserveModal extends React.Component {
                 </div>
                 <div className="form-group col-md-6">
                     <label className="mr-2" htmlFor="accommodation">Accommodation: </label>
-                    <select className="sel custom-select" onChange={(event) => this.handleUserInput(event)}
+                    <select className="sel custom-select" disabled
                             id="accommodation">
                         <option selected
                                 value={this.state.accommodation}>{this.state.reservation.accommodation}</option>
@@ -52,20 +52,20 @@ class ReserveModal extends React.Component {
                 </div>
                 <div className="form-group col-md-6">
                     <label className="mr-2" htmlFor="comfort">Comfort: </label>
-                    <select className="required sel custom-select" onChange={(event) => this.handleUserInput(event)}
+                    <select className="required sel custom-select" disabled
                             id="comfort">
                         <option selected value={this.state.comfort}>{this.state.reservation.comfort}</option>
                     </select>
                 </div>
                 <div className="form-group col-md-6 mr-6">
                     <label htmlFor="checkInDate">Check-in date:</label>
-                    <input className="form-control" onChange={(event) => this.handleUserInput(event)}
-                           value={this.state.reservation.checkInDate} type="date" id="checkInDate" required/>
+                    <input className="form-control"
+                           value={this.props.filterDates.checkIn} disabled  type="date" id="checkInDate" required/>
                 </div>
                 <div className="form-group col-md-6">
                     <label htmlFor="checkOutDate">Check-out date:</label>
-                    <input className="form-control" onChange={(event) => this.handleUserInput(event)}
-                           value={this.state.reservation.checkOutDate} type="date" id="checkOutDate" required/>
+                    <input className="form-control"
+                           value={this.props.filterDates.checkOut} disabled type="date" id="checkOutDate" required/>
                 </div>
                 <div className="form-row col-md-12 text-center">
                     <div className="col-12">

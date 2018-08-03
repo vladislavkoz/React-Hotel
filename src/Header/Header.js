@@ -1,9 +1,45 @@
 import {Link} from "react-router-dom";
 import React from 'react'
+import {connect} from 'react-redux'
+import { logoutUser } from '../actions/authActions'
 import 'react-bootstrap';
 
 class Header extends React.Component {
-    render() {
+    onLogoutClick(e) {
+        e.preventDefault();
+        this.props.logoutUser();
+      }
+    render() { 
+        const { isAuthenticated, user } = this.props.auth;
+        const authLinks = (
+            <ul className="navbar-nav ml-auto">
+              <li className="nav-item">
+              <div className= "d-flex flex-row">
+              <div className="nav-link">
+              <p className="text-white">{user.name}</p> 
+              </div>
+              <div>
+                <a
+                  href=""
+                  onClick={this.onLogoutClick.bind(this)}
+                  className="nav-link text-danger"
+                > Logout</a>
+                </div>
+                </div>
+              </li>
+            </ul>
+          );
+
+          const guestLinks = (
+            <ul className="navbar-nav ml-auto">
+              <li className="nav-item">
+                <Link className="nav-link" to="/login">
+                  Login
+                </Link>
+              </li>
+            </ul>
+           
+          );
         return (
             <div className="bg-dark">
                 <nav className="navbar form-row navbar-expand-lg navbar-dark  text-center">
@@ -30,11 +66,14 @@ class Header extends React.Component {
                             </li>
 
                         </ul>
+                        {isAuthenticated ? authLinks : guestLinks}
                     </div>
                 </nav>
             </div>
         )
     };
 }
-
-export default Header;
+const mapStateToProps = state => ({
+    auth: state.auth,
+  });
+export default connect(mapStateToProps,{logoutUser}) (Header);

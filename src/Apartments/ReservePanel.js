@@ -5,7 +5,8 @@ import ReserveFilter from "./ReserveFilter";
 import Modal from "react-modal";
 import './Filter.css'
 import ReserveModal from "../ModalWindow/ReserveModal";
-
+import { connect } from 'react-redux';
+import { reserve } from '../actions/reserveActions';
 const customStyles = {
     content: {
         width: '60%',
@@ -14,11 +15,11 @@ const customStyles = {
         right: 'auto',
         bottom: 'auto',
         marginRight: '-50%',
-        transform: 'translate(-50%, -50%)'
+        transform: 'translate(-50%, -50%)',
+        overflow: 'auto'
     }
 };
-const apartmentUrl = "http://localhost:3005/apartments";
-const reserveUrl = 'http://localhost:3005/reservations';
+const apartmentUrl = "/api/apartments";
 
 class ReservePanel extends Component {
     constructor() {
@@ -26,7 +27,8 @@ class ReservePanel extends Component {
         this.state = {
             apartments: [],
             selectedApartment:"",
-            isOpenReserveModal: false
+            isOpenReserveModal: false,
+            filterDates:[]
         }
     }
 
@@ -42,6 +44,17 @@ class ReservePanel extends Component {
                 response.json());
         this.setState({apartments: apartments});
     }
+ 
+    setDatesFromFilterForm (formData){
+        let checkIn = formData.get('checkInDate');
+        let checkOut = formData.get('checkOutDate');
+        this.setState({
+            filterDates: {
+                    checkIn:checkIn,
+                    checkOut:checkOut
+                }
+        })
+    };
 
     async getFilteredApartments(filter){
         let apartments = await fetch(apartmentUrl + "/by/?" + filter )
@@ -58,16 +71,7 @@ class ReservePanel extends Component {
 
     addNewReservation = (reservation) => {
         this.closeReserveModal();
-        return fetch(reserveUrl, {
-            method: "POST",
-            body: JSON.stringify({
-                entity: reservation
-            }),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        });
+        this.props.reserve(reservation);
     };
 
     removeApartments = () =>{
@@ -78,10 +82,11 @@ class ReservePanel extends Component {
         return (
             <div>
                 <br/>
-                <h1 className="text-sm-center">Choose dates of reservation</h1>
+                <h1 className="text-sdemoву-center">Choose dates of reservation</h1>
                 <ReserveFilter
                 removeApartments= {this.removeApartments.bind(this)}
                 getFilteredApartment = {this.getFilteredApartments.bind(this)}
+                setDates = {this.setDatesFromFilterForm.bind(this)}
                 />
                 <div className={'cards-Container'}>
                     {this.state.apartments.map(apartment => {
@@ -108,13 +113,13 @@ class ReservePanel extends Component {
                         <ReserveModal
                             apartment={this.state.selectedApartment}
                             addNew={this.addNewReservation}
+                            filterDates={this.state.filterDates}
                         />
                     </Modal>
                 </div>
             </div>
-
         );
     }
 }
 
-export default ReservePanel;
+export default connect(null, {reserve}) (ReservePanel);
