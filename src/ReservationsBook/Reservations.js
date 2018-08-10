@@ -26,28 +26,29 @@ class Reservations extends Component {
         super(props);
         this.state = {
             isOpenEditModal: false,
-            isOpenDeleteModal: false,
             selectedReservation: '',
             index: ""
         }
+    }
+    componentDidMount(){
+        Modal.setAppElement('body')
     }
 
     componentWillMount() {
         this.getAllReservations();
     }
 
-     getAllReservations() {
+    getAllReservations() {
         this.props.getReservations()
     }
 
-     handleUpdate(reservationForUpdate) {
+    handleUpdate(reservationForUpdate) {
         this.props.updateReservation(reservationForUpdate);
         this.closeEditModal();
     };
 
-     deleteReservation(id, index) {
+    deleteReservation(id, index) {
         this.props.deleteReservation(id,index)
-        this.closeDeleteModal();
     }
 
     closeEditModal = () => {
@@ -64,21 +65,7 @@ class Reservations extends Component {
         });
     };
 
-    closeDeleteModal = () => {
-        this.setState({
-            isOpenDeleteModal: false
-        });
-    };
-
-    openDeleteModal = (reservation, i) => {
-        this.setState({
-            isOpenDeleteModal: true,
-            selectedReservation: reservation,
-            index: i
-        });
-    };
-
-     getFilteredReservations(filter) {
+    getFilteredReservations(filter) {
         this.props.getFiteredReservations(filter);
     };
 
@@ -93,6 +80,7 @@ class Reservations extends Component {
                 <div className={"reservations"}>
                     {this.props.reservations.map((reservation, index) => {
                         return (<Reservation
+                                key={index}
                                 id={reservation._id}
                                 clientName={reservation.clientName}
                                 clientPhone={reservation.clientPhone}
@@ -101,6 +89,7 @@ class Reservations extends Component {
                                 checkInDate={reservation.checkInDate}
                                 checkOutDate={reservation.checkOutDate}
                                 editModal={e => this.openEditModal(reservation, index)}
+                                deleteReservation = {this.deleteReservation.bind(this)}
                                 deleteModal={e => this.openDeleteModal(reservation, index)}
                             />
                         )
@@ -120,23 +109,6 @@ class Reservations extends Component {
                             reservation={this.state.selectedReservation}
                             index={this.state.index}
                             onChange={this.handleUpdate.bind(this)}
-                        />
-                    </Modal>
-                </div>
-                <div>
-                    <Modal
-                        isOpen={this.state.isOpenDeleteModal}
-                        onRequestClose={this.closeDeleteModal}
-                        style={customStyles}
-                    >
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close"
-                                onClick={this.closeDeleteModal}>
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <DeleteModal
-                            index={this.state.index}
-                            reservation={this.state.selectedReservation}
-                            deleteReservation={this.deleteReservation.bind(this)}
                         />
                     </Modal>
                 </div>

@@ -34,6 +34,7 @@ class ReserveFilter extends Component {
             } else {
                 let filterQuery = this.createQuery(formData);
                 this.props.getFilteredApartment(filterQuery);
+                this.clearFilter();
             }
         }else{
             this.props.removeApartments();

@@ -4,10 +4,9 @@ import {BootstrapTable, TableHeaderColumn} from "react-bootstrap-table";
 import axios from 'axios';
 const apartmentUrl = "/api/apartments";
 
-async function onAfterDeleteRow(rowKeys) {
-   await fetch(apartmentUrl + '/' + rowKeys, {
-        method: 'delete'
-    });
+function onAfterDeleteRow(rowKeys) {
+    axios
+    .delete(apartmentUrl + '/' + rowKeys)
 }
 
 const options = {
@@ -33,24 +32,25 @@ class ApartmentsPanel extends Component {
             apartment[entry[0]] = entry[1];
         }
         this.addApartmentInDB(apartment);
-        this.getAllApartments().then();
+        this.getAllApartments();
     };
 
-    componentWillMount() {
+    componentDidMount() {
         this.getAllApartments();
     }
 
-    async getAllApartments() {
-        let apartments = await fetch(apartmentUrl)
-            .then(response =>
-                response.json());
-        this.setState({apartments: apartments});
+    getAllApartments() {
+    axios
+        .get(apartmentUrl)
+        .then(response => {
+            this.setState({apartments: response.data})
+        })
     }
 
     addApartmentInDB  (apartment)  {
      axios
-    .post(apartmentUrl, apartment)
-    .then(res => this.setNewApartmentInState(res.data))
+        .post(apartmentUrl, apartment)
+        .then(res => this.setNewApartmentInState(res.data))
 
     };
 
@@ -106,6 +106,7 @@ class ApartmentsPanel extends Component {
                     <TableHeaderColumn width='150' dataAlign="center" hidden isKey  dataField='_id' >id</TableHeaderColumn>
                     <TableHeaderColumn width='150' dataAlign="center"  dataField='accommodation' >Accommodation</TableHeaderColumn>
                     <TableHeaderColumn width='120' dataAlign="center" dataField='comfort'>Comfort</TableHeaderColumn>
+                    <TableHeaderColumn width='80' dataAlign="center" dataField='count'>Count</TableHeaderColumn>
                     <TableHeaderColumn width='80' dataAlign="center" dataField='count'>Count</TableHeaderColumn>
                 </BootstrapTable>
             </div>

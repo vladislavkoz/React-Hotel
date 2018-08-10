@@ -7,6 +7,7 @@ import './Filter.css'
 import ReserveModal from "../ModalWindow/ReserveModal";
 import { connect } from 'react-redux';
 import { reserve } from '../actions/reserveActions';
+import axios from 'axios';
 const customStyles = {
     content: {
         width: '60%',
@@ -31,6 +32,10 @@ class ReservePanel extends Component {
             filterDates:[]
         }
     }
+    
+    componentDidMount(){
+        Modal.setAppElement('body')
+    }
 
     closeReserveModal = () => {
         this.setState({
@@ -38,13 +43,6 @@ class ReservePanel extends Component {
         });
     };
 
-    async getAllApartments() {
-        let apartments = await fetch(apartmentUrl)
-            .then(response =>
-                response.json());
-        this.setState({apartments: apartments});
-    }
- 
     setDatesFromFilterForm (formData){
         let checkIn = formData.get('checkInDate');
         let checkOut = formData.get('checkOutDate');
@@ -56,10 +54,10 @@ class ReservePanel extends Component {
         })
     };
 
-    async getFilteredApartments(filter){
-        let apartments = await fetch(apartmentUrl + "/by/?" + filter )
-            .then(response => response.json());
-        this.setState({apartments: apartments});
+    getFilteredApartments(filter){
+        axios
+        .get(apartmentUrl + "/by/?" + filter )
+        .then(response => {this.setState({apartments: response.data})})
     };
 
     openReserveModal = (apartment) => {
@@ -72,6 +70,7 @@ class ReservePanel extends Component {
     addNewReservation = (reservation) => {
         this.closeReserveModal();
         this.props.reserve(reservation);
+        this.setState({apartments:[]})
     };
 
     removeApartments = () =>{
@@ -89,9 +88,10 @@ class ReservePanel extends Component {
                 setDates = {this.setDatesFromFilterForm.bind(this)}
                 />
                 <div className={'cards-Container'}>
-                    {this.state.apartments.map(apartment => {
+                    {this.state.apartments.map((apartment,index) => {
                             return (
                                 <Apartment
+                                key= {index}
                                     accommodation={apartment.accommodation}
                                     comfort={apartment.comfort}
                                     modal={e => this.openReserveModal(apartment)}

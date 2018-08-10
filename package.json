@@ -5,9 +5,11 @@
   "proxy": "http://localhost:5000",
   "dependencies": {
     "axios": "^0.18.0",
+    "babel-plugin-transform-export-extensions": "^6.22.0",
     "bootstrap": "4.1.2",
     "classnames": "^2.2.6",
     "create-react-class": "^15.6.3",
+    "enzyme-adapter-react-16": "^1.1.1",
     "jwt-decode": "^2.2.0",
     "prop-types": "15.6.2",
     "react": "16.4.1",
@@ -21,17 +23,34 @@
     "react-router": "4.3.1",
     "react-router-dom": "4.3.1",
     "react-scripts": "1.1.4",
+    "react-test-renderer": "^16.4.2",
     "react-widgets": "^4.4.3",
     "reactstrap": "6.3.0",
     "redux": "^4.0.0",
     "redux-devtools-extension": "^2.13.5",
+    "redux-mock-store": "^1.5.3",
     "redux-thunk": "^2.3.0",
     "yup": "^0.26.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "eject": "react-scripts eject"
+  },
+  "jest": {
+    "verbose": true,
+    "testURL": "http://localhost/"
+  },
+  "devDependencies": {
+    "babel-jest": "^23.4.2",
+    "babel-preset-stage-2": "^6.24.1",
+    "enzyme": "^3.3.0",
+    "enzyme-to-json": "^3.3.4",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^23.4.2",
+    "react-addons-test-utils": "^15.6.2"
   }
 }
